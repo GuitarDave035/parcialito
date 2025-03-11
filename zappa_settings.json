@@ -1,21 +1,27 @@
 {
     "dev": {
-        "app_function": "lambda1.lambda_handler",
+        "app_function": "lambda2.lambda_handler2",
         "aws_region": "us-east-1",
         "profile_name": "default",
-        "project_name": "zappa-pagina",
+        "project_name": "zappa-paginacsv",
         "runtime": "python3.10",
         "keep_warm": false,
-        "s3_bucket": "zappa-myzdcsluq",
+        "s3_bucket": "zappa-xgt3ljw1o",
         "apigateway_enabled": false,
         "manage_roles": false,
         "role_name": "LabRole",
         "events": [
             {
-                "function": "lambda1.lambda_handler",
-                "expression": "cron(0 9 ? * 2 *)"
+                "function": "lambda2.lambda_handler2",
+                "event_source": {
+                    "arn": "arn:aws:s3:::parcial11",
+                    "events": ["s3:ObjectCreated:*"],
+                    "filters": [
+                        {"Key": {"prefix": "landing-casas/"}},
+                        {"Key": {"suffix": ".html"}}
+                    ]
+                }
             }
         ]
-
     }
 }
