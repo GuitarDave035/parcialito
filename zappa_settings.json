@@ -22,6 +22,18 @@
                     ]
                 }
             }
+        ],
+        "iam_policy": [
+            {
+                "Effect": "Allow",
+                "Action": ["s3:GetObject"],
+                "Resource": ["arn:aws:s3:::parcial11/landing-casas/*"]
+            },
+            {
+                "Effect": "Allow",
+                "Action": ["s3:PutObject"],
+                "Resource": ["arn:aws:s3:::casasfinalcsv/*"]
+            }
         ]
     }
 }
