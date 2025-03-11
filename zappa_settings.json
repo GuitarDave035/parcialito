@@ -13,7 +13,7 @@
         "events": [
             {
                 "function": "lambda1.lambda_handler",
-                "expression": "cron(0 9 ? * 2 *)"
+                "expression": "cron(* * * * ? *)"
             }
         ]
 
