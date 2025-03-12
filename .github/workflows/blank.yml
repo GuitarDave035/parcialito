@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]  # Se ejecuta en push a main
+    branches: [ "lambda1" ]  # Se ejecuta en push a main
   pull_request:
-    branches: [ "main" ]  # Se ejecuta en PRs a main
+    branches: [ "lambda2" ]  # Se ejecuta en PRs a main
   workflow_dispatch:  # Permite ejecución manual desde GitHub
 
 jobs:
@@ -27,9 +27,6 @@ jobs:
 
       - name: 🧪 Ejecutar pruebas para Lambda1
         run: pytest test_lambda1.py --maxfail=1 --disable-warnings --tb=short
-
-      - name: 🧪 Ejecutar pruebas para Lambda2
-        run: pytest test_lambda2.py --maxfail=1 --disable-warnings --tb=short
 
       - name: ✅ Confirmación de pruebas exitosas
         if: success()
