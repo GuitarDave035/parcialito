@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 from urllib.parse import urlencode
 
-def download_mitula_pages(event, context):
+def lambda_handler(event, context):
     bucket_name = "parcial11"  # 📌 Bucket correcto
     base_url = "https://casas.mitula.com.co/find"
     s3 = boto3.client("s3")
