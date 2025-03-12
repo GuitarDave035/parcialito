@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]  # Se ejecuta en push a main
+  pull_request:
+    branches: [ "main" ]  # Se ejecuta en PRs a main
+  workflow_dispatch:  # Permite ejecución manual desde GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest boto3 requests beautifulsoup4
+
+      - name: 🧪 Ejecutar pruebas para Lambda1
+        run: pytest test_lambda1.py --maxfail=1 --disable-warnings --tb=short
+
+      - name: 🧪 Ejecutar pruebas para Lambda2
+        run: pytest test_lambda2.py --maxfail=1 --disable-warnings --tb=short
+
+      - name: ✅ Confirmación de pruebas exitosas
+        if: success()
+        run: echo "Todas las pruebas pasaron correctamente 🚀"
+
+      - name: ❌ Reporte de error si las pruebas fallan
+        if: failure()
+        run: echo "❌ Las pruebas han fallado. Revisa los errores en los logs."
