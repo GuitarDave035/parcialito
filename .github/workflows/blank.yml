@@ -47,7 +47,9 @@ jobs:
             echo "⚠️ test_lambda1.py no encontrado en ninguna ubicación" && exit 1
           fi
 
-
+      - name: Debug - List files
+        run: ls -R
+        
       - name: Run tests for lambda2
         if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
         run: |
