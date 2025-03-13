@@ -2,41 +2,40 @@ name: CI
 
 on:
   push:
-    branches: 
-      - main
-      - lambda1  # Ejecuta en la rama lambda1 también
-  pull_request:
-    branches: 
+    branches:
       - main
       - lambda1
+      - lambda2
+  pull_request:
+    branches:
+      - main
+      - lambda1
+      - lambda2
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Clonar el repositorio
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 📂 Verificar estructura de archivos
-        run: ls -R  # Esto imprimirá la estructura del repositorio en los logs
-
-      - name: 🐍 Configurar Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.10' # Ajusta la versión de Python según sea necesario
 
-      - name: 📦 Instalar dependencias
+      - name: Install dependencies
         run: |
-          if [ -f lambda1/requirements.txt ]; then
-            pip install -r lambda1/requirements.txt
-          else
-            echo "❌ ERROR: No se encontró lambda1/requirements.txt"
-            exit 1
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
           fi
-          
-      - name: 🧪 Ejecutar pruebas para Lambda1
-        run: |
-          echo "Ejecutando pruebas..."
-          python -m unittest discover -s lambda1 -p "test_*.py"
+
+      - name: Run tests for lambda1
+        if: github.ref == 'refs/heads/lambda1' || github.ref == 'refs/heads/main'
+        run: pytest test_lambda1.py
+
+      - name: Run tests for lambda2
+        if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
+        run: pytest test_lambda2.py
