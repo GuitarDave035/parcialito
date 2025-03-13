@@ -29,15 +29,28 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest  # Aquí se instala pytest
+          pip install pytest  # Asegura que pytest esté instalado
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
 
+      - name: Debug - List files
+        run: ls -R  # Imprime la estructura de archivos para verificar que test_lambda1.py está presente
+
       - name: Run tests for lambda1
         if: github.ref == 'refs/heads/lambda1' || github.ref == 'refs/heads/main'
-        run: python -m pytest test_lambda1.py  # Usa python -m pytest para asegurar que lo reconozca
+        run: |
+          if [ -f test_lambda1.py ]; then
+            python -m pytest test_lambda1.py
+          else
+            echo "⚠️ test_lambda1.py no encontrado" && exit 1
+          fi
 
       - name: Run tests for lambda2
         if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
-        run: python -m pytest test_lambda2.py  # Usa python -m pytest para evitar problemas de PATH
+        run: |
+          if [ -f test_lambda2.py ]; then
+            python -m pytest test_lambda2.py
+          else
+            echo "⚠️ test_lambda2.py no encontrado" && exit 1
+          fi
