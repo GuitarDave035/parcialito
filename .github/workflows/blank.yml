@@ -20,6 +20,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Esto asegura que se obtienen todas las ramas y commits
+
+      - name: Debug - Mostrar estructura del repo
+        run: |
+          echo "Mostrando estructura del repositorio..."
+          pwd
+          ls -R  # Lista todos los archivos y directorios
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -33,9 +41,6 @@ jobs:
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
-
-      - name: Debug - List files
-        run: ls -R  # Esto listará todos los archivos en el workspace para depuración
 
       - name: Run tests for lambda1
         if: github.ref == 'refs/heads/lambda1' || github.ref == 'refs/heads/main'
@@ -55,10 +60,13 @@ jobs:
       - name: Run tests for lambda2
         if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
         run: |
+          echo "Buscando test_lambda2.py en todo el repositorio..."
           find . -name "test_lambda2.py"
           if [ -f test_lambda2.py ]; then
+            echo "✅ test_lambda2.py encontrado en la raíz, ejecutando pruebas..."
             python -m pytest test_lambda2.py
           elif [ -f lambda2/test_lambda2.py ]; then
+            echo "✅ test_lambda2.py encontrado en lambda2/, ejecutando pruebas..."
             cd lambda2 && python -m pytest test_lambda2.py
           else
             echo "⚠️ test_lambda2.py no encontrado en ninguna ubicación" && exit 1
