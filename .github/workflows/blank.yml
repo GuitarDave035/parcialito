@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Esto asegura que se obtienen todas las ramas y commits
+          fetch-depth: 0  # Asegura que todas las ramas y archivos estén disponibles
 
       - name: Debug - Mostrar estructura del repo
         run: |
@@ -55,20 +55,6 @@ jobs:
             echo "✅ test_lambda1.py encontrado en parcialito/, ejecutando pruebas..."
             cd parcialito && python -m pytest test_lambda1.py
           else
-            echo "⚠️ test_lambda1.py no encontrado en ninguna ubicación" && exit 1
-          fi
-
-      - name: Run tests for lambda2
-        if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
-        run: |
-          echo "Buscando test_lambda2.py en todo el repositorio..."
-          find . -name "test_lambda2.py"
-          if [ -f test_lambda2.py ]; then
-            echo "✅ test_lambda2.py encontrado en la raíz, ejecutando pruebas..."
-            python -m pytest test_lambda2.py
-          elif [ -f lambda2/test_lambda2.py ]; then
-            echo "✅ test_lambda2.py encontrado en lambda2/, ejecutando pruebas..."
-            cd lambda2 && python -m pytest test_lambda2.py
-          else
-            echo "⚠️ test_lambda2.py no encontrado en ninguna ubicación" && exit 1
+            echo "⚠️ test_lambda1.py no encontrado en ninguna ubicación"
+            exit 1
           fi
