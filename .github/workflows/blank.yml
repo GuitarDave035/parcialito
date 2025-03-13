@@ -29,7 +29,7 @@ jobs:
 
       - name: 📦 Instalar dependencias
         run: |
-          pip install -r requirements.txt
+          pip install pip install -r lambda1/requirements.txt
 
       - name: 🧪 Ejecutar pruebas para Lambda1
         run: pytest test_lambda1.py --maxfail=1 --disable-warnings --tb=short
