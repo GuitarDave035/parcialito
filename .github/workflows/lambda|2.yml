@@ -33,5 +33,5 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
 
-      - name: Run tests for Lambda2
+      - name: Run tests for Lambda2 s
         run: pytest test_lambda2.py
