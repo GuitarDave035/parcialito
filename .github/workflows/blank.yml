@@ -47,14 +47,24 @@ jobs:
         if: github.ref == 'refs/heads/lambda1' || github.ref == 'refs/heads/main'
         run: |
           echo "Buscando test_lambda1.py en todo el repositorio..."
-          find . -name "test_lambda1.py"
-          if [ -f test_lambda1.py ]; then
-            echo "✅ test_lambda1.py encontrado en la raíz, ejecutando pruebas..."
-            python -m pytest test_lambda1.py
-          elif [ -f parcialito/test_lambda1.py ]; then
-            echo "✅ test_lambda1.py encontrado en parcialito/, ejecutando pruebas..."
-            cd parcialito && python -m pytest test_lambda1.py
+          TEST_FILE=$(find . -name "test_lambda1.py" | head -n 1)
+          if [ -n "$TEST_FILE" ]; then
+            echo "✅ Encontrado: $TEST_FILE, ejecutando pruebas..."
+            python -m pytest "$TEST_FILE"
           else
-            echo "⚠️ test_lambda1.py no encontrado en ninguna ubicación"
+            echo "⚠️ test_lambda1.py no encontrado"
+            exit 1
+          fi
+
+      - name: Run tests for lambda2
+        if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
+        run: |
+          echo "Buscando test_lambda2.py en todo el repositorio..."
+          TEST_FILE=$(find . -name "test_lambda2.py" | head -n 1)
+          if [ -n "$TEST_FILE" ]; then
+            echo "✅ Encontrado: $TEST_FILE, ejecutando pruebas..."
+            python -m pytest "$TEST_FILE"
+          else
+            echo "⚠️ test_lambda2.py no encontrado"
             exit 1
           fi
