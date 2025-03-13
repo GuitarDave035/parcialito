@@ -40,7 +40,6 @@ jobs:
       - name: Run tests for lambda1
         if: github.ref == 'refs/heads/lambda1' || github.ref == 'refs/heads/main'
         run: |
-          find . -name "test_lambda1.py"  # Busca el archivo en cualquier ubicación
           if [ -f test_lambda1.py ]; then
             python -m pytest test_lambda1.py
           elif [ -f lambda1/test_lambda1.py ]; then
@@ -48,6 +47,7 @@ jobs:
           else
             echo "⚠️ test_lambda1.py no encontrado en ninguna ubicación" && exit 1
           fi
+
 
       - name: Run tests for lambda2
         if: github.ref == 'refs/heads/lambda2' || github.ref == 'refs/heads/main'
