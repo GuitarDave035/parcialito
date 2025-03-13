@@ -25,9 +25,10 @@ jobs:
 
       - name: Debug - Mostrar estructura del repo
         run: |
-          echo "Mostrando estructura del repositorio..."
+          echo "Directorio actual:"
           pwd
-          ls -R  # Lista todos los archivos y directorios
+          echo "Contenido del repositorio:"
+          ls -R
 
       - name: Set up Python
         uses: actions/setup-python@v4
