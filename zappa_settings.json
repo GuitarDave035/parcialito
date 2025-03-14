@@ -10,6 +10,16 @@
         "apigateway_enabled": false,
         "manage_roles": false,
         "role_name": "LabRole",
+        "exclude": [
+            "venv",
+            "parcialito",
+            "tests",
+            "__pycache__",
+            "node_modules",
+            "*.pyc",
+            "*.pyo",
+            "*.txt"
+        ],
         "events": [
             {
                 "function": "lambda1.lambda_handler",
