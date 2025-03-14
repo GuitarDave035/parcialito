@@ -1,4 +1,4 @@
-argcomplete==3.6.0
+cdargcomplete==3.6.0
 boto3==1.37.9
 botocore==1.37.9
 certifi==2025.1.31
