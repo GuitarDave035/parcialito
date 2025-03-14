@@ -2,7 +2,7 @@ name: CI - Lambda1 Tests
 
 on:
   push:
-    branches: [ "lambda1" ]
+    branches: [ "lambda1", "GuitarDave035-patch-1" ]
   pull_request:
     branches: [ "lambda1" ]
   workflow_dispatch:
@@ -15,7 +15,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: "lambda1"  # Asegura que siempre se trabaje en la rama lambda1
+          ref: "lambda1"  # Aquí se fuerza a usar lambda1 sin importar en qué rama esté el workflow
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -28,7 +28,8 @@ jobs:
           pip install pytest flake8
 
       - name: Run Flake8 (code style check)
-        run: flake8 --max-line-length=120  # Ajusta las reglas según tus preferencias
+        run: flake8 --max-line-length=120
 
       - name: Run tests for Lambda1
         run: pytest test_lambda1.py
+
