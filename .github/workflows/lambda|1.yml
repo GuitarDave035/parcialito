@@ -38,3 +38,17 @@ jobs:
       - name: Run tests for Lambda1
         run: pytest test_lambda1.py
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Cambia a la región donde tienes tus Lambdas
+      
+      - name: Deploy using Zappa
+        run: |
+          pip install zappa
+          zappa update dev  # Asegúrate de tener un archivo zappa_settings.json
+
+      
+
