@@ -27,8 +27,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest flake8
 
-      - name: Run Flake8 (code style check)
-        run: flake8 --max-line-length=120
+      - name: Check code style with flake8
+        run: |
+          flake8 lambda1.py --exclude=parcialito/lib,site-packages,__pycache__,.git
 
       - name: Run tests for Lambda1
         run: pytest test_lambda1.py
