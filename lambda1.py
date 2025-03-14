@@ -5,11 +5,14 @@ from urllib.parse import urlencode
 
 
 def lambda_handler(event, context):
+    """Lambda para descargar HTML de páginas y subirlo a S3."""
     bucket_name = "parcial11"  # 📌 Bucket de destino en S3
     base_url = "https://casas.mitula.com.co/find"
     s3 = boto3.client("s3")
 
-    today = datetime.utcnow().strftime('%Y-%m-%d')
+    today = datetime.utcnow().strftime(
+        "%Y-%m-%d"
+    )
     file_key = f"landing-casas/{today}.html"  # 📌 Nombre único del archivo por día
 
     all_pages_content = ""  # 📌 Acumulador del contenido HTML
@@ -19,16 +22,23 @@ def lambda_handler(event, context):
             "operationType": "sell",
             "propertyType": "mitula_studio_apartment",
             "geoId": "mitula-CO-poblacion-0000014156",
-            "text": "Bogotá,  (Cundinamarca)",
+            "text": "Bogotá, (Cundinamarca)",
             "page": page
         }
         url = f"{base_url}?{urlencode(params)}"
 
         try:
-            response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
+            response = requests.get(
+                url,
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=10
+            )
 
             if response.status_code == 200:
-                all_pages_content += f"\n<!-- Página {page} -->\n" + response.text
+                all_pages_content += "\n".join([
+                    f"<!-- Página {page} -->",
+                    response.text
+                ])
                 print(f"✅ Página {page} descargada correctamente.")
             else:
                 print(f"⚠️ Error en página {page}: {response.status_code}")
@@ -49,7 +59,10 @@ def lambda_handler(event, context):
             ContentType="text/html"
         )
         print(f"✅ Archivo guardado en S3: s3://{bucket_name}/{file_key}")
-        return {"status": "success", "file": f"s3://{bucket_name}/{file_key}"}
+        return {
+            "status": "success",
+            "file": f"s3://{bucket_name}/{file_key}"
+        }
 
     except Exception as e:
         print(f"🚨 Error al subir a S3: {e}")
