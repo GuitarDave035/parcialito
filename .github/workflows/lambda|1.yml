@@ -15,14 +15,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Verify branch
-        run: |
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          if [[ "$CURRENT_BRANCH" != "lambda1" ]]; then
-            echo "This workflow only runs on lambda1 branch."
-            exit 1
-          fi
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -31,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest flake8  # 🔹 Se agregó flake8 para revisión de código
+          pip install pytest flake8
 
       - name: Run Flake8 for Lambda1
         run: |
