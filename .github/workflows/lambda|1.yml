@@ -22,10 +22,11 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Activar Virtual Environment Existente
+      - name: Create and Activate Virtual Environment
         run: |
-          echo "🐍 Activando el entorno virtual existente: parcialito"
-          source parcialito/bin/activate
+          echo "🐍 Creando un entorno virtual para Zappa"
+          python -m venv venv
+          source venv/bin/activate
           echo "✅ Entorno virtual activado"
 
       - name: Install dependencies
