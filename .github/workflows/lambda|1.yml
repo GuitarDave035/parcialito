@@ -55,7 +55,7 @@ jobs:
       
       - name: Deploy using Zappa
         run: |
-          pip install zappa
+          source venv/bin/activate
           zappa update dev  # Asegúrate de tener un archivo zappa_settings.json
 
       
